@@ -56,6 +56,8 @@ def run(category=None):
 		job_data = run_job(category)
 		if(len(job_data)>0):
 			flash("Already Added")
+		else:
+			pass
 		# # refresh page
 		#jobq = jobs.query.filter_by(job_status='active')
 		return render_template('home.html', title='Index', jobs=job_data)
