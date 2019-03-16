@@ -1,0 +1,61 @@
+{% extends "layout.html" %} 
+{% block content %}
+<div class="container login">
+  <div class="login">
+    <section class="section">
+      <div class="has-text-centered">
+        <img class="login-logo" src="{{ logo }}" />
+      </div>
+
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control has-icons-right">
+            {% if form.username.errors %}
+                {{ form.username(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in form.username.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+            {% else %}
+                {{ form.username(class="input") }}
+            {% endif %}
+            <!--<input name="username" class="input" type="text" />-->
+            <span class="icon is-small is-right">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control has-icons-right">
+            {% if form.password.errors %}
+            {{ form.password(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+                {{ form.password(class="input") }}
+            {% endif %}
+            <span class="icon is-small is-right">
+              <i class="fa fa-key"></i>
+            </span>
+          </div>
+        </div>
+        <div class="has-text-centered">
+          {{ form.login(class="button is-link is-outlined") }}
+        </div>
+
+      </form>
+      <!-- <div class="has-text-centered">
+            <a href="signup.html"> Don't you have an account? Sign up now!</a>
+          </div> -->
+    </section>
+  </div>
+</div>
+{% endblock content %}
