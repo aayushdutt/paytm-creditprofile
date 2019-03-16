@@ -6,11 +6,7 @@ from scoreapp.models import order, shippingData, registrationData, marketing, jo
 def run_job(job_category):   #category
     print("reached run_job()")
     active_jobs = jobs.query.filter_by(job_name=job_category).filter_by(job_status='active').all()
-#    if len(active_jobs) > 0 :
     return active_jobs
-    #print(type(active_jobs))
-
-
 
     #job_to_be_saved = jobs(job_id=job_data.job_id, job_name=job_data.job_name, job_status=job_data.job_status, 		
     #	start_time=job_data.start_time, finish_time=job_data.finish_time, total_records=job_data.total_records,

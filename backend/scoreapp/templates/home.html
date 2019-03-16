@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <nav class="navbar is-white topNav">
   <div class="container">
     <div class="navbar-brand">
@@ -28,7 +29,6 @@
     </div>
   </div>
 </nav>
-
 <section class="hero is-medium is-info is-bold">
   <div class="hero-body">
     <div class="container">
@@ -38,7 +38,7 @@
       <div class="level">
         <a
           class="level-item button is-outlined is-light"
-          href="{{ url_for('run',category='order') }}"
+          href="{{ url_for('run',category='orders') }}"
           >Orders</a
         >
         <a
@@ -60,6 +60,18 @@
     </div>
   </div>
 </section>
+
+<article class="message is-warning">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="message-header">
+       <p>{{message}}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</article>
 
 <section class="section">
   <div class="container">
