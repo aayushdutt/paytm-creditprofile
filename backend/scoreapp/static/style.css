@@ -35,9 +35,11 @@ img.login-logo {
   width: 15vh;
   margin-bottom: 30px;
 }
+article.message.is-warning {
+  margin-bottom: 0; 
+}
 
 .topNav {
   margin-top: 10px;
   margin-bottom: 10px;
-
 }

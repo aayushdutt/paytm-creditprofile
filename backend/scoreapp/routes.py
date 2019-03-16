@@ -52,7 +52,7 @@ def run(category=None):
 	if category is None:
 		self.Error(400)
 	try:
-		# # run and save job
+		# run and save job
 		job_data = run_job(category)
 		if(len(job_data)>0):
 			flash("Already Added")
@@ -60,7 +60,7 @@ def run(category=None):
 			pass
 		# # refresh page
 		#jobq = jobs.query.filter_by(job_status='active')
-		return render_template('home.html', title='Index', jobs=job_data)
+		return redirect(url_for('home'))
 	except Exception as e:
 		self.log.exception(e)
 		self.Error(400)
