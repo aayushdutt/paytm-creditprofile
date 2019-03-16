@@ -8,7 +8,7 @@ if __name__ == '__main__':
 # python
 # from scoreapp import db
 # db.create_all()
-# from scoreapp.models import Patient, order, shippingData, registrationData, marketing, jobs, teamUser
+# from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser, masterData, ap
 # User.query.all()
 # region = Region(name='Over Yonder Thar')
 # db.session.add(region)
