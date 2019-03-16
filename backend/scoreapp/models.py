@@ -107,7 +107,7 @@ class masterData(db.Model, UserMixin):
     is_auto_billing = db.Column(db.Integer, nullable=False, default=0)
     is_paytm_first = db.Column(db.Integer, nullable=False, default=0)
     is_postpaid = db.Column(db.Integer, nullable=False, default=0)
-    postpaid_oustanding = db.Column(db.Integer, nullable=False, default=0)
+    postpaid_outstanding = db.Column(db.Integer, nullable=False, default=0)
     orders_placed_in_6months = db.Column(db.Integer, nullable=False)
     orders_placed_in_6months_via_epay = db.Column(db.Integer, nullable=False)
     orders_placed_in_6months_via_cod = db.Column(db.Integer, nullable=False)
