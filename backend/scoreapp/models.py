@@ -1,5 +1,5 @@
 from datetime import datetime
-from flaskblog import db, login_manager
+from scoreapp import db, login_manager
 from flask_login import UserMixin
 from sqlalchemy import  *
 

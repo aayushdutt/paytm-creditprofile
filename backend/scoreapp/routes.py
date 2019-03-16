@@ -3,9 +3,9 @@ import secrets
 # import numpy as np
 # from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, send_file
-from flaskblog import app, db, bcrypt
-from flaskblog.forms import LoginForm
-from flaskblog.models import order, shippingData, registrationData, marketing, jobs, teamUser
+from scoreapp import app, db, bcrypt
+from scoreapp.forms import LoginForm
+from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/", methods=['GET', 'POST'])
