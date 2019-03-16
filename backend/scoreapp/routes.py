@@ -56,8 +56,10 @@ def run(category=None):
 		job_data = run_job(category)
 		if(len(job_data)>0):
 			flash("Already Added")
-
-		# redirect to home
+		else:
+			pass
+		# # refresh page
+		#jobq = jobs.query.filter_by(job_status='active')
 		return redirect(url_for('home'))
 	except Exception as e:
 		self.log.exception(e)

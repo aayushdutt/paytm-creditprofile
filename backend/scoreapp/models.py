@@ -96,3 +96,27 @@ class teamUser(db.Model, UserMixin):
 
     def __repr__(self):
         return f"teamUser:('{self.username}')"
+
+    #age, Id, Is_auto_billing_on, Is_paytm_first, Is_postpaid, postpaid_outstanding, Orders_placed_in_6months, \
+    #Orders_placed_in_6months_via_epay, Orders_placed_in_6months_via_cod, Orders_placed_in_6months_via_emi, \
+    #Orders_delivered_in_6months, Total_money_on_order_from_mall_6months, Total_money_on_order_on_travel_6months, \
+    #Total_money_on_order_on_movie_6months, Total_money_spent, Total_money_added_on_wallet, CODorNot, EMIorNot
+class masterData(db.Model, UserMixin):
+    id = db.Column(db.String(20), primary_key=True)
+    age = db.Column(db.Integer, nullable=False)
+    is_auto_billing = db.Column(db.Integer, nullable=False, default=0)
+    is_paytm_first = db.Column(db.Integer, nullable=False, default=0)
+    is_postpaid = db.Column(db.Integer, nullable=False, default=0)
+    postpaid_oustanding = db.Column(db.Integer, nullable=False, default=0)
+    orders_placed_in_6months = db.Column(db.Integer, nullable=False)
+    orders_placed_in_6months_via_epay = db.Column(db.Integer, nullable=False)
+    orders_placed_in_6months_via_cod = db.Column(db.Integer, nullable=False)
+    orders_placed_in_6months_via_emi = db.Column(db.Integer, nullable=False)
+    orders_delivered_in_6months = db.Column(db.Integer, nullable=False)
+    total_money_on_order_from_mall_6months = db.Column(db.Integer, nullable=False)
+    total_money_on_order_on_travel_6months = db.Column(db.Integer, nullable=False)
+    total_money_on_order_on_movie_6months = db.Column(db.Integer, nullable=False)
+    total_money_spent = db.Column(db.Integer, nullable=False)
+    total_money_added_on_wallet = db.Column(db.Integer, nullable=False)
+    CODorNot = db.Column(db.Integer, nullable=False)
+    EMIorNot = db.Column(db.Integer, nullable=False)
