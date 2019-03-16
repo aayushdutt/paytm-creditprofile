@@ -13,3 +13,5 @@ if __name__ == '__main__':
 # region = Region(name='Over Yonder Thar')
 # db.session.add(region)
 # db.session.commit()
+# job_id= job_data.job_id
+# db.session.commit()

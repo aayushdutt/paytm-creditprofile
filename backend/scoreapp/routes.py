@@ -8,6 +8,7 @@ from scoreapp.forms import LoginForm
 from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser
 from flask_login import login_user, current_user, logout_user, login_required
 from scoreapp.job_helper import *
+from sqlalchemy import desc
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
@@ -53,11 +54,24 @@ def run(category=None):
 		self.Error(400)
 	try:
 		# run and save job
-		job_data = run_job(category)
+		job_data = detect_active_job(category)
 		if(len(job_data)>0):
 			flash("Already Added")
 		else:
-			pass
+			job_data = jobs.query.filter_by(job_name=category).order_by(desc(jobs.start_time)).first()
+			job_start_time = job_data.start_time
+			job_status= job_data.job_status
+			job_id= job_data.job_id
+			job_finish_time = job_data.finish_time
+			job_total_records = job_data.total_records
+			job_currently_processed_record = job_data.currently_processed_records
+			print(job_id)
+			print(job_status)
+			print(job_start_time)
+			print(job_finish_time)
+			print(job_total_records)
+			print(job_currently_processed_record)
+
 		# # refresh page
 		#jobq = jobs.query.filter_by(job_status='active')
 		return redirect(url_for('home'))
