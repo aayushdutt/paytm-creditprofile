@@ -15,20 +15,15 @@ def login():
 	if current_user.is_authenticated:
 		return redirect(url_for('home'))
 	form = LoginForm()
-	#print("Line 18")
 	if form.validate_on_submit():
 		user = teamUser.query.filter_by(username=form.username.data).first()
 		print(user)
 		if user and user.password == form.password.data:
-			#print("Line 23")
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
-			#print(next_page)
 			return redirect(next_page) if next_page else redirect(url_for('home'))
 		else:
-			#print("Line 27")
 			flash('Login Unsuccessful. Please check email and password', 'danger')
-	#print("Line 29")
 	return render_template('login.html', title='Login', form=form, logo = image_file)
 
 
@@ -39,8 +34,8 @@ def home():
 	jobq = jobs.query.filter_by(job_status='active')
 	return render_template('home.html', title='Index', jobs=jobq)
 
-@app.route("/ml/<string:category>")
-def ml(category=None):
+@app.route("/run/<string:category>")
+def run(category=None):
 	if category is None:
 		self.Error(400)
 	try:
@@ -55,4 +50,3 @@ def ml(category=None):
 def logout():
 	logout_user()
 	return redirect(url_for('login'))
-
