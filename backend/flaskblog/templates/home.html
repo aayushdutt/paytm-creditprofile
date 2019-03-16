@@ -1,3 +1,84 @@
-{% extends "layout2.html" %} {% block content %}
+{% extends "layout.html" %}
+{% block content %}
+<nav class="navbar is-white topNav">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../">
+        <img src="../static/img/paytm_logo.png " height="28" />
+      </a>
+    </div>
+    <div id="topNav" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="field is-grouped">
+            <p class="control">
+              <a
+                href="{{ url_for('logout') }}"
+                class="button is-medium is-info is-outlined"
+              >
+                <span class="icon">
+                  <i class="fa fa-user"></i>
+                </span>
+                <span>Log Out</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero is-medium is-info is-bold">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title has-text-centered">
+        Start a new Job
+      </h1>
+      <div class="level">
+        <a
+          class="level-item button is-outlined is-light"
+          href="{{ url_for('ml',category='Orders') }}"
+          >Orders</a
+        >
+        <a
+          class="level-item button is-outlined is-light"
+          href="{{ url_for('ml',category='Shipping') }}"
+          >Shipping</a
+        >
+        <a
+          class="level-item button is-outlined is-light"
+          href="{{ url_for('ml',category='Registrations') }}"
+          >Registrations</a
+        >
+        <a
+          class="level-item button is-outlined is-light"
+          href="{{ url_for('ml',category='Marketing') }}"
+          >Marketing</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% for job in jobs %}
+    <div class="running-jobs">
+      <h1 class="title">Job Running: {{ job.job_name }}</h1>
+      <p class="subtitle">
+        <progress
+          style="margin-top: 50px; margin-bottom: 15px;"
+          class="progress"
+          value="{{ job.currently_processed_records }}"
+          max="{{ job.total_records }}"
+        ></progress>
+        Completed <strong>{{ job.currently_processed_records }}</strong> of
+        <strong>{{ job.total_records }}</strong> records.
+      </p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
 
 {% endblock content %}
