@@ -7,6 +7,7 @@ from scoreapp import app, db, bcrypt
 from scoreapp.forms import LoginForm
 from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser
 from flask_login import login_user, current_user, logout_user, login_required
+from scoreapp.job_helper import *
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
@@ -52,15 +53,12 @@ def run(category=None):
 		self.Error(400)
 	try:
 		# # run and save job
-		# job_data = run_job(category);
-		# current_job = jobs(job_id=job_data.job_id, job_name=job_data.job_name, job_status=job_data.job_status, start_time=job_data.start_time, finish_time=job_data.finish_time, total_records=job_data.total_records, currently_processed_records=job_data.currently_processed_records, job_name=job_data.job_name)
-
-        # db.session.add(current_job)
-        # db.session.commit()
-
+		job_data = run_job(category)
+		if(len(job_data)>0):
+			flash('Already Added', success)
 		# # refresh page
-		jobq = jobs.query.filter_by(job_status='active')
-		return render_template('home.html', title='Index', jobs=jobq)
+		#jobq = jobs.query.filter_by(job_status='active')
+		return render_template('home.html', title='Index', jobs=job_data)
 	except Exception as e:
 		self.log.exception(e)
 		self.Error(400)
