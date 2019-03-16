@@ -44,12 +44,11 @@ def ml(category=None):
 	if category is None:
 		self.Error(400)
 	try:
-		jobq = jobs.query.filter_by(job_status='active').first()
-		return render_template('ml.html', title='Prediction', job=jobq)
+		jobq = jobs.query.filter_by(job_status='active')
+		return render_template('home.html', title='Index', jobs=jobq)
 	except Exception as e:
 		self.log.exception(e)
 		self.Error(400)
-
 
 
 @app.route("/logout")
