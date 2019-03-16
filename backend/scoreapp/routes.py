@@ -2,7 +2,7 @@ import os
 import secrets
 # import numpy as np
 # from PIL import Image
-from flask import render_template, url_for, flash, redirect, request, send_file
+from flask import render_template, url_for, flash, redirect, request, send_file, jsonify
 from scoreapp import app, db, bcrypt
 from scoreapp.forms import LoginForm
 from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser
@@ -34,11 +34,31 @@ def home():
 	jobq = jobs.query.filter_by(job_status='active')
 	return render_template('home.html', title='Index', jobs=jobq)
 
+# @app.route("/run/<string:category>")
+# def run(category=None):
+# 	if category is None:
+# 		self.Error(400)
+# 	try:
+# 		jobq = jobs.query.filter_by(job_status='active')
+# 		return render_template('home.html', title='Index', jobs=jobq)
+# 	except Exception as e:
+# 		self.log.exception(e)
+# 		self.Error(400)
+
+
 @app.route("/run/<string:category>")
 def run(category=None):
 	if category is None:
 		self.Error(400)
 	try:
+		# # run and save job
+		# job_data = run_job(category);
+		# current_job = jobs(job_id=job_data.job_id, job_name=job_data.job_name, job_status=job_data.job_status, start_time=job_data.start_time, finish_time=job_data.finish_time, total_records=job_data.total_records, currently_processed_records=job_data.currently_processed_records, job_name=job_data.job_name)
+
+        # db.session.add(current_job)
+        # db.session.commit()
+
+		# # refresh page
 		jobq = jobs.query.filter_by(job_status='active')
 		return render_template('home.html', title='Index', jobs=jobq)
 	except Exception as e:
