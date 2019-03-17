@@ -89,7 +89,7 @@ def run(category=None):
 
 def runJob(category, totalRecord):
 	if category=='shipping':
-		 shippingData.query.filter(shippingData.timeStamp>=startTime).count()
+		shippingData.query.filter(shippingData.timeStamp>=startTime).count()
 	elif category=='orders':
 		return order.query.filter(order.timeStamp >= startTime).count()
 	elif category=='registration':
