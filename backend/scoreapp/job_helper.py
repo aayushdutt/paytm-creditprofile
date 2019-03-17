@@ -3,7 +3,7 @@ from scoreapp.models import order, shippingData, registrationData, marketing, jo
 
 
 
-def run_job(job_category):   #category
+def detect_active_job(job_category):   #category
     print("reached run_job()")
     active_jobs = jobs.query.filter_by(job_name=job_category).filter_by(job_status='active').all()
     return active_jobs
