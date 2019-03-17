@@ -43,3 +43,13 @@ article.message.is-warning {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+/* temp */
+
+body > section.section > div > div:nth-child(1) > p > progress {
+  color: red;
+}
+
+.hidden {
+  display: none;
+}
