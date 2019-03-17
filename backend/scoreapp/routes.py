@@ -2,16 +2,16 @@ import os
 import csv
 import secrets
 import pandas as pd
-# import numpy as np
-# from PIL import Image
+import numpy as np
 from flask import render_template, url_for, flash, redirect, request, send_file, jsonify
 from scoreapp import app, db, bcrypt
 from scoreapp.forms import LoginForm
 from scoreapp.models import order, shippingData, registrationData, marketing, jobs, teamUser, masterData
 from flask_login import login_user, current_user, logout_user, login_required
-from scoreapp.job_helper import *
 from sqlalchemy import desc
 import time
+
+from scoreapp.ml import *
 
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/login", methods=['GET', 'POST'])
@@ -39,73 +39,100 @@ def home():
 	jobq = jobs.query.filter_by(job_status='active')
 	return render_template('home.html', title='Index', jobs=jobq)
 
-# @app.route("/run/<string:category>")
-# def run(category=None):
-# 	if category is None:
-# 		self.Error(400)
-# 	try:
-# 		jobq = jobs.query.filter_by(job_status='active')
-# 		return render_template('home.html', title='Index', jobs=jobq)
-# 	except Exception as e:
-# 		self.log.exception(e)
-# 		self.Error(400)
-
-
 @app.route("/run/<string:category>")
 def run(category=None):
 	if category is None:
 		self.Error(400)
 	try:
 		# run and save job
-		print("line59")
 		job_data = jobs.query.filter_by(job_name=category).filter_by(job_status='active').all()
-		print("line61")
 		if(len(job_data)>0):
 			flash("Already Added")
-			print("line64")
 		else:
-			print("line66")
 			job_data = jobs.query.filter_by(job_name=category).filter_by(job_status='finish').order_by(desc(jobs.finish_time)).first()
-			print("line68")
+			print(job_data)
 			new_job_start_time = job_data.finish_time
 			new_job_id= db.session.query(jobs).count()+1
 			new_job_name = category
 			new_job_status = 'active'
-			new_job_finish_time = -1
+			new_job_finish_time = 0
 			new_job_currently_processed_records = 0
-			# run the actual job
-			# calling async function
-			new_job_total_records = recordCounter(category, new_job_start_time)
+			new_job_total_records, recordList = recordCounter(category, new_job_start_time)
 			new_job = jobs(job_id=new_job_id, job_name=new_job_name, job_status=new_job_status, start_time=new_job_start_time, finish_time=new_job_finish_time, total_records= new_job_total_records, currently_processed_records=new_job_currently_processed_records);
 			db.session.add(new_job)
 			db.session.commit()
-			print("line73")
+			# run the actual job
+			# calling async function
+			job_active = jobs.query.filter_by(job_status='active').all()
+			runJob(category, new_job_total_records, recordList)
+			return render_template('home.html', title='Index', jobs=job_active)
 		job_active = jobs.query.filter_by(job_status='active')
-		print("line75")
 		return render_template('home.html', title='Index', jobs=job_active)
 	except Exception as e:
 		self.log.exception(e)
 		self.Error(400)
 
-def runJob(category, totalRecord):
-	if category=='shipping':
-		shippingData.query.filter(shippingData.timeStamp>=startTime).count()
-	elif category=='orders':
-		return order.query.filter(order.timeStamp >= startTime).count()
-	elif category=='registration':
-		return registrationData.query.filter(registrationData.timeStamp >= startTime).count()
-	else:
+def runJob(category, totalRecord, recordList):
+	q = jobs.query.filter_by(job_name=category).filter_by(job_status='active').first()
+	q.job_status='finish'
+	q.finish_time = int(float(time.time()))
+	q.currently_processed_records=totalRecord
+	db.session.commit()
+	for j_id in recordList:
+		print(j_id)
+		# new q will define here
+		row = masterData.query.filter_by(id=j_id).first()
+		print(row)
+		if category == 'shipping':
+			q = shippingData.query.filter_by(customer_id=j_id).first()
+			row.orders_placed_in_6months = row.orders_placed_in_6months + 1
+			row.orders_placed_in_6months_via_epay = row.orders_placed_in_6months_via_epay + q.is_EPay
+			row.orders_placed_in_6months_via_cod = row.orders_placed_in_6months_via_cod + q.is_COD
+			row.total_money_spent = row.total_money_spent + q.pdt_amount
+			if q.is_Cancelled==0:
+				row.orders_delivered_in_6months = row.orders_delivered_in_6months + 1
+		elif category == 'orders':
+			q = order.query.filter_by(customer_id = j_id).first()
+			row.orders_placed_in_6months = row.orders_placed_in_6months + 1
+			row.orders_placed_in_6months_via_epay = row.orders_placed_in_6months_via_epay + q.is_EPay
+			row.orders_placed_in_6months_via_cod = row.orders_placed_in_6months_via_cod + q.is_COD
+			row.total_money_spent = row.total_money_spent + q.pdt_amount
+
+		elif category == 'marketing':
+			q = marketing.query.filter_by(customer_id = j_id).first()
+			row.is_auto_billing = q.is_auto_billing
+			row.is_paytm_first = q.is_paytm_first
+
+
 
 def recordCounter(category, startTime):
+	c = 0
+	t = []
 	if category=='shipping':
-		return shippingData.query.filter(shippingData.timeStamp>=startTime).count()
+		c = shippingData.query.filter(shippingData.timeStamp >= startTime).count()
+		temp = shippingData.query.filter(shippingData.timeStamp >= startTime).all()
+		t = []
+		for i in range(c):
+			t.append(temp[i].customer_id)
 	elif category=='orders':
-		return order.query.filter(order.timeStamp >= startTime).count()
+		c = order.query.filter(order.timeStamp >= startTime).count()
+		temp = order.query.filter(order.timeStamp >= startTime).all()
+		t = []
+		for i in range(c):
+			t.append(temp[i].customer_id)
 	elif category=='registration':
-		return registrationData.query.filter(registrationData.timeStamp >= startTime).count()
+		c = registrationData.query.filter(registrationData.timeStamp >= startTime).count()
+		temp = registrationData.query.filter(registrationData.timeStamp >= startTime).all()
+		t = []
+		for i in range(c):
+			t.append(temp[i].customer_id)
 	else:
-		return marketing.query.filter(marketing.timeStamp>=startTime).count()
-
+		c = marketing.query.filter(marketing.timeStamp >= startTime).count()
+		temp = marketing.query.filter(marketing.timeStamp >= startTime).all()
+		t = []
+		for i in range(c):
+			t.append(temp[i].customer_id)
+	return c, t
 @app.route("/logout")
 def logout():
 	logout_user()
