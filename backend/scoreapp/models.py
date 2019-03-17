@@ -120,3 +120,4 @@ class masterData(db.Model, UserMixin):
     total_money_added_on_wallet = db.Column(db.Integer, nullable=False)
     CODorNot = db.Column(db.Integer, nullable=False)
     EMIorNot = db.Column(db.Integer, nullable=False)
+    

@@ -37,21 +37,25 @@
       </h1>
       <div class="level">
         <a
+          id='orderBtn'
           class="level-item button is-outlined is-light"
           href="{{ url_for('run',category='orders') }}"
           >Orders</a
         >
         <a
+          id='shippingBtn'
           class="level-item button is-outlined is-light"
           href="{{ url_for('run',category='shipping') }}"
           >Shipping</a
         >
         <a
+          id='registrationBtn'
           class="level-item button is-outlined is-light"
           href="{{ url_for('run',category='registration') }}"
           >Registrations</a
         >
         <a
+          id='marketingBtn'
           class="level-item button is-outlined is-light"
           href="{{ url_for('run',category='marketing') }}"
           >Marketing</a
@@ -90,6 +94,7 @@
       </p>
     </div>
     {% endfor %}
+
   </div>
 </section>
 
